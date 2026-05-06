@@ -31,15 +31,57 @@ document.addEventListener('DOMContentLoaded', function() {
   // ========================================
   // Form Submission Handler
   // ========================================
+
+  // Set initial timestamp on page load
+  const quoteFormEl = document.querySelector('.quote-form');
+  if (quoteFormEl) {
+    const tsField = quoteFormEl.querySelector('input[name="form_timestamp"]');
+    if (tsField) tsField.value = Date.now();
+
+    const submitBtn = quoteFormEl.querySelector('button[type="submit"]');
+    const successMsg = quoteFormEl.querySelector('.quote-form__success');
+    const errorMsg = quoteFormEl.querySelector('.quote-form__error');
+
+    quoteFormEl.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      submitBtn.disabled = true;
+      successMsg.style.display = 'none';
+      errorMsg.style.display = 'none';
+
+      try {
+        const payload = new URLSearchParams(new FormData(quoteFormEl));
+        const response = await fetch(quoteFormEl.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: payload.toString()
+        });
+
+        const result = await response.json().catch(() => ({}));
+
+        if (response.ok && result.success) {
+          successMsg.style.display = 'block';
+          quoteFormEl.reset();
+          const tsFieldAfter = quoteFormEl.querySelector('input[name="form_timestamp"]');
+          if (tsFieldAfter) tsFieldAfter.value = Date.now();
+        } else {
+          errorMsg.style.display = 'block';
+        }
+      } catch {
+        errorMsg.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  }
+
   const heroForm = document.querySelector('.hero__form-inner');
   if (heroForm) {
     heroForm.addEventListener('submit', function(e) {
       e.preventDefault();
       const emailInput = this.querySelector('input[type="email"]');
       const email = emailInput.value.trim();
-
       if (email) {
-        // Simulate form submission
         alert(`Thank you! We'll contact you at ${email} to schedule your consultation.`);
         emailInput.value = '';
       }

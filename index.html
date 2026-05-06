@@ -861,7 +861,12 @@
           <p class="section__description">Fill out the form below and we&#39;ll get back to you with a competitive quote.</p>
         </div>
       </div>
-      <form class="quote-form" action="https://formspree.io/f/mbdkdbgy" method="POST">
+      <form class="quote-form" action="https://levelled-form-handler.vercel.app/api/submit" method="POST">
+        <input type="hidden" name="client_id" value="eco-garden-sn7">
+        <input type="hidden" name="business_name" value="Eco Garden SN7">
+        <input type="hidden" name="form_timestamp" value="">
+        <!-- Honeypot: off-screen, invisible to real users -->
+        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
         <div class="form-row">
           <input type="text" name="name" placeholder="Full name" class="form-input" required>
           <input type="text" name="postcode" placeholder="Postcode" class="form-input" required>
@@ -872,6 +877,8 @@
         </div>
         <textarea name="message" placeholder="Briefly describe your project" class="form-input form-textarea" required></textarea>
         <button type="submit" class="btn btn--primary btn--full">Yes, I Want a Free Quote</button>
+        <p class="quote-form__success" style="display:none;color:#22c08a;text-align:center;margin-top:1rem;font-weight:600;">Thanks! We'll be in touch with your free quote shortly.</p>
+        <p class="quote-form__error" style="display:none;color:#e53e3e;text-align:center;margin-top:1rem;">Something went wrong. Please try again or call us directly.</p>
       </form>
     </div>
   </section>
